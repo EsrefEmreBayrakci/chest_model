@@ -297,11 +297,9 @@ def gogus_sesi_oznitelikleri(dosya_yolu, sr=16000):
    
     max_len = 8 * sr_new  
     if y_normalized.shape[0] < max_len:
-      # padding with zero
       pad_width = max_len - y_normalized.shape[0]
       y_normalized = np.pad(y_normalized, (0, pad_width))
     elif y_normalized.shape[0] > max_len:
-      # truncated
       y_normalized = y_normalized[:max_len]
     
     
