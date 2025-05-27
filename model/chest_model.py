@@ -99,7 +99,7 @@ with open("xgb_model.pkl", "rb") as f:
 
 
 # Hastanın sesi 
-hasta_sesi = "BP17_COPD,E W,A R M,57,M.wav"
+hasta_sesi = "asthma.wav"
 
 hasta_sesi_ozellik = gogus_sesi_oznitelikleri(hasta_sesi)
 hasta_sesi_ozellik1 = list(hasta_sesi_ozellik.values())
