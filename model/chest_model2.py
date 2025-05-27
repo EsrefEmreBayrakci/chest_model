@@ -2,7 +2,7 @@ from scipy.signal import butter, lfilter
 import librosa
 import numpy as np
 import pywt
-#import pickle
+import cloudpickle as pickle
 
 
 
@@ -31,19 +31,13 @@ def gogus_sesi_oznitelikleri(dosya_yolu, sr=16000):
     lowcut = 300
     highcut = 1500
     filtered_y = bandpass_filter(x, lowcut, highcut, sr_new)
-    
-    
-    
-    # padding sound 
-    # because duration of sound is dominantly 20 s and all of sample rate is 22050
-    # we want to pad or truncated sound which is below or above 20 s respectively
-    max_len = 8 * sr_new  # length of sound array = time x sample rate
+      
+   
+    max_len = 8 * sr_new 
     if filtered_y.shape[0] < max_len:
-      # padding with zero
       pad_width = max_len - filtered_y.shape[0]
       y_normalized = np.pad(filtered_y, (0, pad_width))
     elif filtered_y.shape[0] > max_len:
-      # truncated
       filtered_y = filtered_y[:max_len]
     
 
@@ -63,7 +57,7 @@ def gogus_sesi_oznitelikleri(dosya_yolu, sr=16000):
     y_harmonic, y_percussive = librosa.effects.hpss(y_normalized)
     oznitelik['harmonic_ratio'] = np.mean(y_harmonic / (y_percussive + 1e-6))
     
-    # Chroma features
+    # Chroma Öznitelikler
     chroma = librosa.feature.chroma_stft(y=y_normalized, sr=sr_new)
     oznitelik['chroma_mean'] = np.mean(chroma)
     
@@ -93,10 +87,10 @@ def gogus_sesi_oznitelikleri(dosya_yolu, sr=16000):
 selected_indices = np.array([ 0,  2,  3,  4,  6,  8,  9, 10, 11, 14, 17, 20, 21,24, 25, 28, 29, 30, 31, 32])
 
 
-import cloudpickle as pickle
+
 
 # Model yükleme
-with open("xgb_model_4.pkl", "rb") as f:
+with open("xgb_model.pkl", "rb") as f:
     loaded_model, loaded_encoder, loaded_scaler = pickle.load(f)
 
 
